@@ -1,0 +1,10 @@
+data/*
+bilup-api
+bilup-api.*
+.env
+main
+
+!data/agreement.json
+!data/agreement.md
+
+*.log

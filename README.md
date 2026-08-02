@@ -1,0 +1,70 @@
+# Bilup/api
+
+Go backend for Bilup community, the Bilup community platform. Rotur validator auth, flat JSON storage, Cloudflare R2 for project blobs, git.bilup.org (Gitea) for repos, forks, and pull requests.
+
+## Run
+
+Copy `.env.example` to `.env`, fill in the values, then run:
+
+```
+go build .
+bilup-api
+```
+
+The server loads `.env` automatically. Real environment variables override `.env`.
+
+## Environment
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| PORT | 5627 | Listen port |
+| APP_URL | https://api.bilup.org | Public URL of this API |
+| ROTUR_APP_KEY | mistwarp | Rotur validator app key |
+| R2_ENDPOINT | | https://accountid.r2.cloudflarestorage.com |
+| R2_BUCKET | mistwarp | R2 bucket name |
+| R2_ACCESS_KEY_ID | | R2 access key |
+| R2_SECRET_ACCESS_KEY | | R2 secret key |
+| R2_PUBLIC_BASE | | Public custom domain for the bucket |
+| GITEA_URL | https://git.bilup.org | Gitea instance |
+| GITEA_ADMIN_TOKEN | | Gitea admin token (sudo for forks, PRs, merges) |
+| EDITOR_ORIGIN | https://warp.mistium.com | Editor origin for CORS |
+| ADMIN_USERS | mist | Comma separated admin usernames |
+
+## Deployment layout
+
+The site and editor are one scratch-gui build (community pages live in
+`scratch-gui/src/community`), served on the frontend domain:
+
+| Path | Serves |
+| --- | --- |
+| / | community app (webpack `community` entry -> index.html) |
+| /editor | scratch-gui editor |
+| /embed.html | scratch-gui embed player (project pages iframe this) |
+| /project/*, /explore, /users/*, /settings | community app (client routing) |
+
+This API runs on a SEPARATE domain, `api.bilup.org`. The frontend calls it
+at `https://api.bilup.org/api` directly. In dev, leave the API base unset and
+webpack-dev-server proxies `/api` to `http://localhost:5627`. Auth is
+Bearer-token based (the session token returned by `/api/auth`), so a
+cross-domain API works without shared cookies. CORS echoes the request Origin
+with credentials, so any frontend origin is accepted.
+
+R2 bucket only needs public GET (through R2_PUBLIC_BASE). All writes go through this server. With no R2 configured, the server falls back to local disk (`data/blobs/`, served at `/blobs`) so it runs locally with zero setup.
+## Upload pipeline
+
+The editor POSTs a sparse sb3 to `POST /api/projects/:id/upload` (multipart, fields `project` and optional `thumbnail`). The server extracts at most 1 GiB of `project.json`, validates it incrementally, requires asset filenames to match their content, and limits every asset to 10 MiB and all assets to 50 MiB. The JSON is accepted only when its gzip representation is at most 20 MiB.
+
+- `assets/<md5ext>`: content addressed, shared across all projects and remixes, uploaded once ever
+- `projects/<id>/project.json`: the gzip-encoded playable snapshot
+- `projects/<id>/thumb.png`
+
+Uploads per project are debounced to one per 24 hours (429 with `retryAfterMs` otherwise); git carries every save, R2 holds a daily snapshot. `data/assets-index.json` tracks which assets R2 already has so duplicates are never re-uploaded.
+
+## Auth flow
+
+1. Client holds a rotur token (rotur-sdk login).
+2. Client fetches `https://api.accounts.bilup.org/generate_validator?key=<ROTUR_APP_KEY>&auth=<token>` (must be the same rotur instance the server validates against).
+3. Client calls `POST /api/auth?v=<validator>`; the API validates it against `https://api.accounts.bilup.org/validate` and returns a 7 day session token (also set as the auth_token cookie). Bearer header and cookie are both accepted.
+
+# For AI
+Read `AIPLSREADME.md` .
