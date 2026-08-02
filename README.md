@@ -19,16 +19,16 @@ The server loads `.env` automatically. Real environment variables override `.env
 | --- | --- | --- |
 | PORT | 5627 | Listen port |
 | APP_URL | https://api.bilup.org | Public URL of this API |
-| ROTUR_APP_KEY | mistwarp | Rotur validator app key |
+| ROTUR_APP_KEY | bilup | Rotur validator app key |
 | R2_ENDPOINT | | https://accountid.r2.cloudflarestorage.com |
-| R2_BUCKET | mistwarp | R2 bucket name |
+| R2_BUCKET | bilup | R2 bucket name |
 | R2_ACCESS_KEY_ID | | R2 access key |
 | R2_SECRET_ACCESS_KEY | | R2 secret key |
 | R2_PUBLIC_BASE | | Public custom domain for the bucket |
 | GITEA_URL | https://git.bilup.org | Gitea instance |
 | GITEA_ADMIN_TOKEN | | Gitea admin token (sudo for forks, PRs, merges) |
-| EDITOR_ORIGIN | https://warp.mistium.com | Editor origin for CORS |
-| ADMIN_USERS | mist | Comma separated admin usernames |
+| EDITOR_ORIGIN | https://app.bilup.org | Editor origin for CORS |
+| ADMIN_USERS | RyaninCn11 | Comma separated admin usernames |
 
 ## Deployment layout
 

@@ -163,12 +163,12 @@ func resetQuota(username string) bool {
 }
 
 func handleQuotaReset(c *Context) {
-	if mistwarpRoturToken == "" {
+	if bilupRoturToken == "" {
 		c.json(503, Obj{"ok": false, "error": "credit resets are not available right now"})
 		return
 	}
 	userLower := normalizeUsername(c.getString("username"))
-	payTo := mistwarpAccountUser()
+	payTo := bilupAccountUser()
 	if payTo == "" {
 		c.internalError("could not start the reset, try again")
 		return
@@ -183,7 +183,7 @@ func handleQuotaReset(c *Context) {
 }
 
 func handleQuotaResetConfirm(c *Context) {
-	if mistwarpRoturToken == "" {
+	if bilupRoturToken == "" {
 		c.json(503, Obj{"ok": false, "error": "credit resets are not available right now"})
 		return
 	}

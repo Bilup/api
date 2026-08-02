@@ -35,7 +35,10 @@ func extensionReviewUrl(extensionUrl string) string {
 
 func isGalleryExtensionUrl(extensionUrl string) bool {
 	return strings.HasPrefix(extensionUrl, "https://extensions.turbowarp.org/") ||
-		strings.HasPrefix(extensionUrl, "https://extensions.mistium.com/")
+		strings.HasPrefix(extensionUrl, "https://extensions.mistium.com/") ||
+		strings.HasPrefix(extensionUrl, "https://extensions.bilup.org/") ||
+		strings.HasPrefix(extensionUrl, "https://editors.astras.top/extensions/") ||
+		strings.HasPrefix(extensionUrl, "https://sharkpools-extensions.vercel.app/")
 }
 
 func extensionReviewUrls(urls []any) []any {

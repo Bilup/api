@@ -67,8 +67,8 @@ var (
 	editorOrigin        string
 	corsAllowedOrigins  []string
 	adminUsers          []string
-	mistwarpRoturToken  string
-	mistwarpRoturUser   string
+	bilupRoturToken  string
+	bilupRoturUser   string
 	roturBase           string
 	paywallFeePercent   float64
 	r2Local             bool
@@ -117,19 +117,19 @@ func configVal(name, def string) string {
 func loadConfig() {
 	appURL = configVal("APP_URL", "https://api.bilup.org")
 	port = configVal("PORT", "5627")
-	roturAppKey = configVal("ROTUR_APP_KEY", "mistwarp")
+	roturAppKey = configVal("ROTUR_APP_KEY", "bilup")
 	r2Endpoint = configVal("R2_ENDPOINT", "")
-	r2Bucket = configVal("R2_BUCKET", "mistwarp")
+	r2Bucket = configVal("R2_BUCKET", "bilup")
 	r2AccessKeyId = configVal("R2_ACCESS_KEY_ID", "")
 	r2SecretAccessKey = configVal("R2_SECRET_ACCESS_KEY", "")
 	r2PublicBase = configVal("R2_PUBLIC_BASE", "")
 	giteaURL = configVal("GITEA_URL", "https://git.bilup.org")
 	giteaAdminToken = configVal("GITEA_ADMIN_TOKEN", "")
-	editorOrigin = configVal("EDITOR_ORIGIN", "https://warp.mistium.com")
+	editorOrigin = configVal("EDITOR_ORIGIN", "https://app.bilup.org")
 	corsAllowedOrigins = splitCsv(configVal("CORS_ORIGINS", editorOrigin+",http://localhost:8601,http://localhost:8602"))
-	adminUsers = splitCsv(strings.ToLower(configVal("ADMIN_USERS", "mist")))
-	mistwarpRoturToken = configVal("MISTWARP_ROTUR_TOKEN", "")
-	mistwarpRoturUser = configVal("MISTWARP_ROTUR_USER", "")
+	adminUsers = splitCsv(strings.ToLower(configVal("ADMIN_USERS", "RyaninCn11")))
+	bilupRoturToken = configVal("MISTWARP_ROTUR_TOKEN", "")
+	bilupRoturUser = configVal("MISTWARP_ROTUR_USER", "")
 	roturBase = configVal("ROTUR_BASE", "https://api.accounts.bilup.org")
 	paywallFeePercent = toFloat(configVal("PAYWALL_FEE_PERCENT", "10"))
 

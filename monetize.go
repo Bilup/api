@@ -110,12 +110,12 @@ func canRemixProject(project Obj, c *Context) bool {
 }
 
 func roturGet(path string) httpResp {
-	return requestsGet(roturBase+path, Obj{"headers": Obj{"Authorization": "Bearer " + mistwarpRoturToken}})
+	return requestsGet(roturBase+path, Obj{"headers": Obj{"Authorization": "Bearer " + bilupRoturToken}})
 }
 
 func roturPost(path string, body Obj) httpResp {
 	return requestsPost(roturBase+path, Obj{
-		"headers": Obj{"Authorization": "Bearer " + mistwarpRoturToken, "Content-Type": "application/json"},
+		"headers": Obj{"Authorization": "Bearer " + bilupRoturToken, "Content-Type": "application/json"},
 		"body":    jsonString(body),
 	})
 }
@@ -125,9 +125,9 @@ func payoutTo(recipient string, amount float64, note string) bool {
 	return payResp.success && payResp.status == 200
 }
 
-func mistwarpAccountUser() string {
-	if mistwarpRoturUser != "" {
-		return mistwarpRoturUser
+func bilupAccountUser() string {
+	if bilupRoturUser != "" {
+		return bilupRoturUser
 	}
 	resp := roturGet("/me")
 	if !resp.success || resp.status != 200 {
@@ -218,7 +218,7 @@ func handleListPendingPayouts(c *Context) {
 }
 
 func handleRetryPendingPayouts(c *Context) {
-	if mistwarpRoturToken == "" {
+	if bilupRoturToken == "" {
 		c.json(503, Obj{"ok": false, "error": "payouts are not available right now"})
 		return
 	}
@@ -394,7 +394,7 @@ func recordSale(project Obj, buyer string, price, sellerAmount float64) {
 }
 
 func handlePurchaseIntent(c *Context) {
-	if mistwarpRoturToken == "" {
+	if bilupRoturToken == "" {
 		c.json(503, Obj{"ok": false, "error": "purchases are not available right now"})
 		return
 	}
@@ -423,7 +423,7 @@ func handlePurchaseIntent(c *Context) {
 		return
 	}
 
-	payTo := mistwarpAccountUser()
+	payTo := bilupAccountUser()
 	if payTo == "" {
 		c.internalError("could not start the purchase, try again")
 		return
@@ -440,7 +440,7 @@ func handlePurchaseIntent(c *Context) {
 }
 
 func handlePurchaseConfirm(c *Context) {
-	if mistwarpRoturToken == "" {
+	if bilupRoturToken == "" {
 		c.json(503, Obj{"ok": false, "error": "purchases are not available right now"})
 		return
 	}
