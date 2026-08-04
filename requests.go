@@ -69,7 +69,11 @@ func requestsDo(method, url string, opts map[string]any) httpResp {
 			out.headers[k] = v[0]
 		}
 	}
-	buf := make([]byte, 0, res.ContentLength)
+	cap := res.ContentLength
+	if cap < 0 {
+		cap = 0
+	}
+	buf := make([]byte, 0, cap)
 	tmp := make([]byte, 1024)
 	for {
 		n, rerr := res.Body.Read(tmp)
