@@ -128,8 +128,8 @@ func loadConfig() {
 	editorOrigin = configVal("EDITOR_ORIGIN", "https://app.bilup.org")
 	corsAllowedOrigins = splitCsv(configVal("CORS_ORIGINS", editorOrigin+",http://localhost:8601,http://localhost:8602"))
 	adminUsers = splitCsv(strings.ToLower(configVal("ADMIN_USERS", "RyaninCn11")))
-	bilupRoturToken = configVal("MISTWARP_ROTUR_TOKEN", "")
-	bilupRoturUser = configVal("MISTWARP_ROTUR_USER", "")
+	bilupRoturToken = configVal("BILUP_ROTUR_TOKEN", "")
+	bilupRoturUser = configVal("BILUP_ROTUR_USER", "")
 	roturBase = configVal("ROTUR_BASE", "https://api.accounts.bilup.org")
 	paywallFeePercent = toFloat(configVal("PAYWALL_FEE_PERCENT", "10"))
 

@@ -442,7 +442,7 @@ func unshareProjectForBlockedExtension(project Obj) bool {
 		profile["featuredProject"] = ""
 		saveProfile(profile)
 	}
-	addNotification(toString(project["owner"]), "MistWarp", "moderation", Obj{"message": "Your project \"" + toString(project["title"]) + "\" uses an extension that has been blocked. Remove the extension before sharing the project again."})
+	addNotification(toString(project["owner"]), "Bilup", "moderation", Obj{"message": "Your project \"" + toString(project["title"]) + "\" uses an extension that has been blocked. Remove the extension before sharing the project again."})
 	return true
 }
 
