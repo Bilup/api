@@ -170,8 +170,8 @@ func parentDirOf(path string) string {
 	return dir
 }
 
-// r2PutEncoded / r2Put / r2Remove: write blobs. With r2Local the blob is written
-// to local disk. Remote R2 (S3) writes are not yet implemented in this port.
+// r2PutEncoded / r2Put / r2Remove: write blobs. With r2Local the blob is
+// written to local disk; otherwise it is uploaded to R2 via S3-compatible API.
 func r2PutEncoded(key string, body []byte, contentType, contentEncoding string) bool {
 	if r2Local {
 		path := localBlobPath(key)
@@ -180,7 +180,7 @@ func r2PutEncoded(key string, body []byte, contentType, contentEncoding string) 
 		}
 		return fsWriteFileBytes(path, body)
 	}
-	return false
+	return r2PutRemote(key, body, contentType, contentEncoding)
 }
 
 func r2Put(key string, body []byte, contentType string) bool {
@@ -191,7 +191,7 @@ func r2Remove(key string) bool {
 	if r2Local {
 		return fsRemove(localBlobPath(key))
 	}
-	return false
+	return r2RemoveRemote(key)
 }
 
 func copyStoredProjectJsonToPath(project Obj, outputPath string) bool {
