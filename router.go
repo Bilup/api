@@ -425,9 +425,25 @@ func (rt *Router) static(prefix, dir string) {
 }
 
 func (rt *Router) serve(addr string) error {
+	// Go 1.22+ ServeMux returns 405 for unregistered methods before any
+	// handler (and thus before middleware) runs. Intercept OPTIONS preflight
+	// here so corsMiddleware still gets to set headers and respond 204.
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == "OPTIONS" {
+			rw := &responseWriter{ResponseWriter: w, status: 200}
+			ctx := &Context{w: rw, r: r}
+			chain := make([]HandlerFunc, 0, len(rt.middleware)+1)
+			chain = append(chain, rt.middleware...)
+			chain = append(chain, func(c *Context) { c.noContent() })
+			ctx.chain = chain
+			ctx.chain[0](ctx)
+			return
+		}
+		rt.mux.ServeHTTP(w, r)
+	})
 	return (&http.Server{
 		Addr:              addr,
-		Handler:           rt.mux,
+		Handler:           handler,
 		ReadHeaderTimeout: 10 * tr.Second,
 		IdleTimeout:       120 * tr.Second,
 	}).ListenAndServe()
