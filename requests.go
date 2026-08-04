@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io"
 	"net/http"
 	"strings"
 )
@@ -27,7 +28,7 @@ func requestsDo(method, url string, opts map[string]any) httpResp {
 	if opts == nil {
 		opts = map[string]any{}
 	}
-	var bodyReader *strings.Reader
+	var bodyReader io.Reader
 	headers := map[string]string{}
 	if rawBody, ok := opts["body"]; ok && rawBody != nil {
 		var bs string
