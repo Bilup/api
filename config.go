@@ -115,7 +115,7 @@ func configVal(name, def string) string {
 }
 
 func loadConfig() {
-	appURL = configVal("APP_URL", "https://api.bilup.org")
+	appURL = strings.TrimRight(configVal("APP_URL", "https://api.bilup.org"), "/")
 	port = configVal("PORT", "5627")
 	roturAppKey = configVal("ROTUR_APP_KEY", "bilup")
 	r2Endpoint = configVal("R2_ENDPOINT", "")
