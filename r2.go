@@ -270,17 +270,25 @@ func serveBlobKey(c *Context, key string) {
 		return
 	}
 	direct := r2DirectUrl(key)
-	if direct == "" {
-		c.notFound("blob not found")
-		return
+	if direct != "" {
+		fetched := requestsGet(direct, nil)
+		if fetched.success && fetched.status == 200 {
+			c.setHeader("Cache-Control", blobCacheHeaderEnv(key))
+			c.data(200, contentTypeForKey(key), []byte(fetched.body))
+			return
+		}
 	}
-	fetched := requestsGet(direct, nil)
-	if !fetched.success || fetched.status != 200 {
-		c.notFound("blob not found")
-		return
+	// Fallback for assets: try the separate R2 assets bucket (no "assets/" prefix).
+	if strings.HasPrefix(key, "assets/") && r2AssetsBase != "" {
+		fallback := r2AssetsBase + "/" + strings.TrimPrefix(key, "assets/")
+		fetched := requestsGet(fallback, nil)
+		if fetched.success && fetched.status == 200 {
+			c.setHeader("Cache-Control", blobCacheHeaderEnv(key))
+			c.data(200, contentTypeForKey(key), []byte(fetched.body))
+			return
+		}
 	}
-	c.setHeader("Cache-Control", blobCacheHeaderEnv(key))
-	c.data(200, contentTypeForKey(key), []byte(fetched.body))
+	c.notFound("blob not found")
 }
 
 func serveProjectJson(c *Context, project Obj) {

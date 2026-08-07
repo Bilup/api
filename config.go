@@ -62,6 +62,7 @@ var (
 	r2AccessKeyId       string
 	r2SecretAccessKey   string
 	r2PublicBase        string
+	r2AssetsBase        string
 	giteaURL            string
 	giteaAdminToken     string
 	editorOrigin        string
@@ -123,6 +124,7 @@ func loadConfig() {
 	r2AccessKeyId = configVal("R2_ACCESS_KEY_ID", "")
 	r2SecretAccessKey = configVal("R2_SECRET_ACCESS_KEY", "")
 	r2PublicBase = configVal("R2_PUBLIC_BASE", "")
+	r2AssetsBase = strings.TrimRight(configVal("R2_ASSETS_BASE", ""), "/")
 	giteaURL = configVal("GITEA_URL", "https://git.bilup.org")
 	giteaAdminToken = configVal("GITEA_ADMIN_TOKEN", "")
 	editorOrigin = configVal("EDITOR_ORIGIN", "https://app.bilup.org")
