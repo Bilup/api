@@ -19,6 +19,8 @@ func ensureDirectories() bool {
 	result = fsMkdirAll(quotaDir) && result
 	result = fsMkdirAll(agreementAcceptDir) && result
 	result = fsMkdirAll(extensionsDir) && result
+	result = fsMkdirAll(releasesDir) && result
+	result = fsMkdirAll(communityDir) && result
 	return result
 }
 

@@ -154,6 +154,58 @@ func main() {
 	api.POST("/admin/extensions/policy", requireAdmin, handleAdminSetExtensionPolicy)
 	api.POST("/admin/extensions/url-policy", requireAdmin, handleAdminSetExtensionUrlPolicy)
 
+	// ---- Community tools (spaces, releases, previews, diagnostics, etc.) ----
+	api.GET("/spaces", handleListSpaces)
+	api.GET("/spaces/{id}", handleGetSpace)
+	api.POST("/spaces", requireAuth, handleCreateSpace)
+	api.PUT("/spaces/{id}", requireAuth, handleUpdateSpace)
+	api.DELETE("/spaces/{id}", requireAuth, handleDeleteSpace)
+	api.POST("/spaces/{id}/projects/{project}", requireAuth, handleAddSpaceProject)
+	api.DELETE("/spaces/{id}/projects/{project}", requireAuth, handleRemoveSpaceProject)
+	api.POST("/spaces/{id}/follow", requireAuth, handleFollowSpace)
+	api.DELETE("/spaces/{id}/follow", requireAuth, handleUnfollowSpace)
+	api.GET("/me/spaces", requireAuth, handleMySpaces)
+	api.GET("/spaces/{id}/management", requireAuth, handleGetSpaceManagement)
+	api.POST("/spaces/{id}/invite", requireAuth, handleInviteSpaceCurator)
+	api.POST("/spaces/{id}/respond-invite", requireAuth, handleRespondSpaceCuratorInvite)
+	api.DELETE("/spaces/{id}/curators/{username}", requireAuth, handleRemoveSpaceCurator)
+	api.DELETE("/spaces/{id}/invite/{username}", requireAuth, handleCancelSpaceCuratorInvite)
+	api.POST("/spaces/{id}/react", requireAuth, handleReactSpace)
+	api.GET("/spaces/{id}/comments", handleGetSpaceComments)
+	api.POST("/spaces/{id}/comments", requireAuth, requireGoodStanding, handleCreateSpaceComment)
+	api.DELETE("/spaces/{id}/comments/{cid}", requireAuth, handleDeleteSpaceComment)
+	api.POST("/spaces/{id}/comments/{cid}/react", requireAuth, handleReactSpaceComment)
+
+	api.POST("/projects/{id}/preview", requireAuth, handleCreatePreview)
+
+	api.GET("/projects/{id}/releases", handleListReleases)
+	api.POST("/projects/{id}/releases", requireAuth, handleCreateRelease)
+	api.GET("/projects/{id}/releases/{release}/project.json", handleGetReleaseProjectJson)
+
+	api.POST("/projects/{id}/contributions", requireAuth, handleCreateContribution)
+
+	api.POST("/projects/{id}/diagnostics", handleRecordDiagnostic)
+	api.GET("/projects/{id}/diagnostics", requireAuth, handleGetDiagnostics)
+
+	api.POST("/projects/{id}/feedback", handleCreateProjectFeedback)
+	api.GET("/projects/{id}/feedback", requireAuth, handleGetProjectFeedback)
+	api.PUT("/projects/{id}/feedback/{feedback}", requireAuth, handleUpdateProjectFeedback)
+
+	api.GET("/projects/{id}/reviews", handleListProjectReviews)
+	api.GET("/users/{name}/reviews", handleListUserReviews)
+	api.PUT("/projects/{id}/review", requireAuth, handleSaveProjectReview)
+	api.DELETE("/projects/{id}/review", requireAuth, handleDeleteProjectReview)
+
+	api.GET("/ideas", handleListIdeas)
+	api.POST("/ideas", requireAuth, handleCreateIdea)
+	api.POST("/ideas/{id}/vote", requireAuth, handleVoteIdea)
+	api.GET("/ideas/{id}/comments", handleGetIdeaComments)
+	api.POST("/ideas/{id}/comments", requireAuth, requireGoodStanding, handleCreateIdeaComment)
+	api.DELETE("/ideas/{id}/comments/{cid}", requireAuth, handleDeleteIdeaComment)
+	api.PUT("/ideas/{id}", requireAuth, handleUpdateIdea)
+
+	api.GET("/projects/{id}/card", handleProjectCard)
+
 	fmtLog("Bilup API listening on " + appURL)
 	if err := app.serve(":" + port); err != nil {
 		panic(err)

@@ -33,6 +33,16 @@ var (
 	extensionsFile     = "data/extensions.json"
 	purchaseKeysFile   = "data/purchase-keys.json"
 	pendingPayoutsFile = "data/pending-payouts.json"
+	releasesDir        = "data/releases/"
+	communityDir       = "data/community/"
+	spacesFile         = communityDir + "spaces.json"
+	releasesIndexFile  = communityDir + "releases.json"
+	previewsFile       = communityDir + "previews.json"
+	diagnosticsFile    = communityDir + "diagnostics.json"
+	feedbackFile       = communityDir + "feedback.json"
+	ideasFile          = communityDir + "ideas.json"
+	playtimeFile       = communityDir + "playtime.json"
+	reviewsFile        = communityDir + "reviews.json"
 )
 
 // ---- limits (main.osl) ----
