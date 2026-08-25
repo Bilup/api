@@ -45,7 +45,7 @@ func main() {
 	api.bodyLimit(262144)
 
 	uploads := app.group("/api")
-	uploads.bodyLimit(268435456)
+	uploads.bodyLimit(1342177280)
 	uploads.POST("/projects/{id}/upload", requireAuth, handleUploadProject)
 	uploads.POST("/projects/{id}/thumbnail", requireAuth, handleSetThumbnail)
 	uploads.POST("/admin/projects/{id}/extensions/index", requireAdmin, handleAdminIndexProjectExtensions)

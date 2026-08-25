@@ -47,19 +47,19 @@ var (
 
 // ---- limits (main.osl) ----
 const (
-	maxProjectJsonBytes       float64 = 1073741824
-	maxStoredProjectJsonBytes float64 = 20971520
-	maxAssetBytes             float64 = 10485760
-	maxThumbBytes             float64 = 1048576
-	maxAssetCount                     = 2000
-	maxProjectAssetsBytes     float64 = 52428800
+	maxProjectJsonBytes       float64 = 5368709120
+	maxStoredProjectJsonBytes float64 = 104857600
+	maxAssetBytes             float64 = 52428800
+	maxThumbBytes             float64 = 5242880
+	maxAssetCount                     = 10000
+	maxProjectAssetsBytes     float64 = 262144000
 	maxExtractedProjectBytes  float64 = maxProjectJsonBytes + maxProjectAssetsBytes
-	weeklyUploadQuotaBytes    float64 = 104857600
+	weeklyUploadQuotaBytes    float64 = 524288000
 	quotaWindowMs                     = 604800000
 	uploadDebounceMs                   = 86400000
-	maxProjectExtensions               = 100
-	maxExtensionSourceBytes   float64 = 2097152
-	maxProjectExtensionBytes  float64 = 10485760
+	maxProjectExtensions               = 500
+	maxExtensionSourceBytes   float64 = 10485760
+	maxProjectExtensionBytes  float64 = 52428800
 )
 
 // ---- config values (main.osl) ----
