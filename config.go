@@ -76,6 +76,7 @@ var (
 	giteaURL            string
 	giteaAdminToken     string
 	editorOrigin        string
+	frontendOrigin      string
 	corsAllowedOrigins  []string
 	adminUsers          []string
 	bilupRoturToken  string
@@ -138,7 +139,8 @@ func loadConfig() {
 	giteaURL = configVal("GITEA_URL", "https://git.bilup.org")
 	giteaAdminToken = configVal("GITEA_ADMIN_TOKEN", "")
 	editorOrigin = configVal("EDITOR_ORIGIN", "https://app.bilup.org")
-	corsAllowedOrigins = splitCsv(configVal("CORS_ORIGINS", editorOrigin+",http://localhost:8601,http://localhost:8602"))
+	frontendOrigin = configVal("FRONTEND_ORIGIN", "")
+	corsAllowedOrigins = splitCsv(configVal("CORS_ORIGINS", editorOrigin+","+frontendOrigin+",http://localhost:8601,http://localhost:8602"))
 	adminUsers = splitCsv(strings.ToLower(configVal("ADMIN_USERS", "RyaninCn11")))
 	bilupRoturToken = configVal("BILUP_ROTUR_TOKEN", "")
 	bilupRoturUser = configVal("BILUP_ROTUR_USER", "")
