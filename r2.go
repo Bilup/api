@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 )
@@ -120,7 +121,12 @@ func publicUrl(key string) string {
 	return blobBase() + "/" + key
 }
 
-func assetsBaseUrl() string { return blobBase() + "/assets" }
+func assetsBaseUrl() string {
+	if r2PublicBase != "" {
+		return r2PublicBase + "/assets"
+	}
+	return blobBase() + "/assets"
+}
 
 func contentTypeForExt(ext string) string {
 	types := Obj{
@@ -277,6 +283,7 @@ func serveBlobKey(c *Context, key string) {
 			c.data(200, contentTypeForKey(key), []byte(fetched.body))
 			return
 		}
+		fmtLog("serveBlobKey: R2 direct failed for " + key + " status=" + fmt.Sprintf("%d", fetched.status) + " success=" + fmt.Sprintf("%t", fetched.success))
 	}
 	// Fallback for assets: try the separate R2 assets bucket (no "assets/" prefix).
 	if strings.HasPrefix(key, "assets/") && r2AssetsBase != "" {

@@ -4,6 +4,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"time"
 )
 
 // requests.osl — HTTP client helper (subset used by returns.models).
@@ -55,7 +56,7 @@ func requestsDo(method, url string, opts map[string]any) httpResp {
 	for k, v := range headers {
 		req.Header.Set(k, v)
 	}
-	client := &http.Client{}
+	client := &http.Client{Timeout: 10 * time.Second}
 	res, err := client.Do(req)
 	if err != nil {
 		return out
