@@ -1,5 +1,8 @@
 # Bilup/api
 
+> [!WARNING]
+> This repository is archived due to com.bilup.org 's community function is now down. Sorry for the inconvenice.
+
 Go backend for Bilup community, the Bilup community platform. Rotur validator auth, flat JSON storage, Cloudflare R2 for project blobs, git.bilup.org (Gitea) for repos, forks, and pull requests.
 
 ## Run
